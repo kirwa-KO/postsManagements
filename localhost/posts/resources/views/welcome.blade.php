@@ -62,6 +62,7 @@
                 margin-bottom: 30px;
             }
         </style>
+        <link rel="icon" href=" {{ asset('images/posts_icon.png') }} ">
     </head>
     <body>
         <div class="flex-center position-ref full-height">

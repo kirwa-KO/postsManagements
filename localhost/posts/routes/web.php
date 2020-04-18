@@ -65,6 +65,9 @@ Route::resource('/posts', 'PostController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/secret', 'HomeController@secret')
+				->name('secret')
+				->middleware('secret.page');
 
 // Auth::routes();
 

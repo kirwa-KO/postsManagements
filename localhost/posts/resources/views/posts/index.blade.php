@@ -35,24 +35,38 @@
 		</div>
 		@endif
 
+		@can('update', $post)
 		<a class="btn btn-warning" href="{{ route('posts.edit', [$post->id]) }}">Edit</a>
+		@endcan
+
 		@if (!$post->deleted_at)
+			@can('delete', $post)
 			<form class="formInline" method="POST" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
 				@csrf
 				@method('DELETE')
 				<button class="btn btn-danger" type="submit">Remove</button>
 			</form>
+			@endcan
+			@cannot('delete', $post)
+				<p class="badge badge-danger">
+					you can't edit this post..!
+				</p>
+			@endcannot
 		@else
+			@can('restore', $post)
 			<form class="formInline" method="POST" action="{{ url('/posts/' . $post->id . '/restore') }}">
 				@csrf
 				@method('PATCH')
 				<button class="btn btn-success" type="submit">Restore</button>
 			</form>
+			@endcan
+			@can('forceDelete', $post)
 			<form class="formInline" method="POST" action="{{ url('/posts/' . $post->id . '/forcedelete') }}">
 				@csrf
 				@method('DELETE')
 				<button class="btn btn-danger" type="submit">Force Delete</button>
 			</form>
+			@endcan
 		@endif
 	</li>
 @empty

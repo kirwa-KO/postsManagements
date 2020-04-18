@@ -2,7 +2,7 @@
 	<label for="postname">Title of Post</label>
 	<input class="form-control" name="postname" id="postname" type="text">
 <div>
-{{-- <input name="postname" id="postname" type="text" value="{{ old('postname', $post->postname ?? null) }}"> --}}
+		{{-- <input name="postname" id="postname" type="text" value="{{ old('postname', $post->postname ?? null) }}"> --}}
 {{-- <br>
 <br> --}}
 <div class="form-group">

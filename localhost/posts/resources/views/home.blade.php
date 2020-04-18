@@ -13,8 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You are logged in!
+                    <a href="/secret">Adminstrator</a>
+                    <h4>You are logged in!</h4>
+                    <button class="btn btn-primary"><a href="{{ route('posts.index') }}" style="color: white;">Posts</a></button>
                 </div>
             </div>
         </div>

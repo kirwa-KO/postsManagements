@@ -9,17 +9,18 @@
 	{{-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> --}}
 	<link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 	<link rel="stylesheet" href="{{ mix('/css/theme.css') }}">
+	<link rel="icon" href=" {{ asset('images/posts_icon.png') }} ">
 </head>
 <body>
 	@if (session()->has('status'))
 		<h4 style="color: green;">{{ session()->get('status') }}</h4>
 	@endif
 
-<nav class="navbar navbar-expand navbar-dark bg-success">
+<nav class="navbar navbar-expand navbar-dark bg-primary">
 	<ul class="nav navbar-nav">
-		<li class="nav-item"><a class="nav-link" href="{{ route('welcome') }}">Home</a></li>
-		<li class="nav-item"><a class="nav-link" href="{{ route('about') }}">About</a></li>
-		<li class="nav-item"><a class="nav-link" href="{{ route('posts.create') }}">Create Post</a></li>
+		<li class="nav-item"><a style="color: white;" class="nav-link" href="{{ route('welcome') }}">Home</a></li>
+		<li class="nav-item"><a style="color: white;" class="nav-link" href="{{ route('about') }}">About</a></li>
+		<li class="nav-item"><a style="color: white;" class="nav-link" href="{{ route('posts.create') }}">Create Post</a></li>
 	</ul>
 </nav>
 
