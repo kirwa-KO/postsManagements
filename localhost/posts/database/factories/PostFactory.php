@@ -10,6 +10,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'postname' => $faker->realText(20),
         'description' => $faker->text(),
         'status' => $faker->boolean,
-        'password' => password_hash($faker->text(), PASSWORD_DEFAULT)
+        'password' => password_hash($faker->text(), PASSWORD_DEFAULT),
+        'updated_at' => $faker->dateTimeBetween('-3 years')
     ];
 });

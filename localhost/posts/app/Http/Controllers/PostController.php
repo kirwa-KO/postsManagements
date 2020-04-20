@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 
 use App\Post;
+use App\User;
 use App\Comment;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
-use GuzzleHttp\Middleware;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -45,10 +46,18 @@ class PostController extends Controller
 		// ]));
 
 
-		$posts = Post::withCount('comments')->orderBy('updated_at', 'desc')->get();
+		// $posts = Post::withCount('comments')->orderBy('updated_at', 'desc')->get();
+		$posts = Post::withCount('comments')->get();
+
+		// $user = User::withCount('posts')->get();
+
+		// dd($user);
 
 		return (view('posts.index', [
 			'posts' => $posts,
+			'mostCommented' => Post::mostCommented()->take(5)->get(),
+			'mostWriters' => User::mostWriter()->take(5)->get(),
+			'usersActiveLastMounth' => User::userActiveLastMounth()->take(5)->get(),
 			'tab' => 'list'
 		]));
 
@@ -58,7 +67,9 @@ class PostController extends Controller
 
 	public function archive()
 	{
-		$posts = Post::onlyTrashed()->withCount('Comments')->orderBy('updated_at', 'desc')->get();
+		// $posts = Post::onlyTrashed()->withCount('Comments')->orderBy('updated_at', 'desc')->get();
+		$posts = Post::onlyTrashed()->withCount('Comments')->get();
+
 		return (view('posts.index', [
 			'posts' => $posts,
 			'tab' => 'archive'
@@ -67,7 +78,10 @@ class PostController extends Controller
 
 	public function all()
 	{
-		$posts = Post::withTrashed()->withCount('Comments')->orderBy('updated_at', 'desc')->get();
+		// $posts = Post::withTrashed()->withCount('Comments')->orderBy('updated_at', 'desc')->get();
+
+		$posts = Post::withTrashed()->withCount('Comments')->get();
+
 		return (view('posts.index', [
 			'posts' => $posts,
 			'tab' => 'all'
@@ -84,7 +98,8 @@ class PostController extends Controller
 	{
 		// dd(\App\Post::find($id));
 		return (view('posts.show', [
-			'post' => Post::findOrFail($id)
+			'post' => Post::findOrFail($id),
+			'comments' => Comment::where('post_id', $id)->get()
 		]));
 	}
 	public  function create()
@@ -106,6 +121,7 @@ class PostController extends Controller
 		$data = $request->only('postname', 'description');
 		$data['password'] = password_hash('you can do it...!', PASSWORD_DEFAULT);
 		$data['status'] = 'active';
+		$data['user_id'] = $request->user()->id;
 		$post = Post::create($data);
 		// return redirect()->route('posts.show', ['post' => $post->id]);
 

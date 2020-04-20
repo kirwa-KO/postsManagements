@@ -67,7 +67,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/secret', 'HomeController@secret')
 				->name('secret')
-				->middleware('secret.page');
+				->middleware('can:secret.page');
 
 // Auth::routes();
 

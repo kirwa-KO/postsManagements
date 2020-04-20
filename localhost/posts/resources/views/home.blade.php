@@ -13,7 +13,9 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    @can('secret.page')
                     <a href="/secret">Adminstrator</a>
+                    @endcan
                     <h4>You are logged in!</h4>
                     <button class="btn btn-primary"><a href="{{ route('posts.index') }}" style="color: white;">Posts</a></button>
                 </div>
