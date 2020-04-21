@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\AdminScope;
 use App\Scopes\LatestScopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -27,9 +28,11 @@ class Post extends Model
 	{
 		return $query->withCount('comments')->orderBy('updated_at', 'desc');
 	}
-	
+
 	public	static function boot()
 	{
+		static::addGlobalScope(new AdminScope);
+		
 		parent::boot();
 
 		static::addGlobalScope(new LatestScopes);

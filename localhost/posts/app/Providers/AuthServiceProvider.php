@@ -55,7 +55,7 @@ class AuthServiceProvider extends ServiceProvider
 		   // if ($user->is_admin && in_array($ability, ['post.update']))
 			 //   return true;
 
-			if ($user->is_admin && in_array($ability, ['update', 'restore']))
+			if ($user->is_admin && in_array($ability, ['update', 'restore', 'delete', 'forceDelete']))
 				return true;
 		}
 		);
