@@ -4,8 +4,9 @@ namespace App;
 
 use App\Scopes\AdminScope;
 use App\Scopes\LatestScopes;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -32,10 +33,16 @@ class Post extends Model
 	public	static function boot()
 	{
 		static::addGlobalScope(new AdminScope);
-		
+
 		parent::boot();
 
 		static::addGlobalScope(new LatestScopes);
+
+		static::updating(function (Post $post)
+		{
+			Cache::forget("comment-post-show-{$post->id}");
+			Cache::forget("post-show-{$post->id}");
+		});
 
 		static::deleting(function (Post $post)
 		{
@@ -47,4 +54,10 @@ class Post extends Model
 			$post->comments()->restore();
 		});
 	}
+
+	public	function	tags()
+	{
+		return ($this->belongsToMany("App\Tag")->withTimestamps());
+	}
+
 }

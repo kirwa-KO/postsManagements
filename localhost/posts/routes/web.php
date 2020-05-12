@@ -72,3 +72,6 @@ Route::get('/secret', 'HomeController@secret')
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/posts/tag/{id}', 'PostTagController@index')
+		->name('posts.tag.list');

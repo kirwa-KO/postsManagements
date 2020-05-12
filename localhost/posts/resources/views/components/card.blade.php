@@ -5,12 +5,14 @@
 	</div>
 	<ul class="list-group list-group-flush">
 		@if (empty(trim($slot)))
-			@foreach ($items as $item)
-			<li class="list-group-item">
-				<span class="badge badge-{{ $type }}">{{ $item->posts_count }}</span>
-				{{ $item->name }}
-			</li>
-			@endforeach
+			@if (!empty($items))
+				@foreach ($items as $item)
+				<li class="list-group-item">
+					<span class="badge badge-{{ $type }}">{{ $item->posts_count }}</span>
+					{{ $item->name }}
+				</li>
+				@endforeach
+			@endif
 		@else
 			{{ $slot }}
 		@endif

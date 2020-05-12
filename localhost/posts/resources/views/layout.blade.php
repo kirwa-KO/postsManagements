@@ -22,7 +22,7 @@
 		<li class="nav-item"><a style="color: white;" class="nav-link" href="{{ route('welcome') }}">Home</a></li>
 		<li class="nav-item"><a style="color: white;" class="nav-link" href="{{ route('about') }}">About</a></li>
 		<li class="nav-item"><a style="color: white;" class="nav-link" href="{{ route('posts.create') }}">Create Post</a></li>
-
+		@auth
 		<li class="nav-item dropdown" style="margin-left: 900px;">
 			<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 				{{ Auth::user()->name }} <span class="caret"></span>
@@ -40,7 +40,7 @@
 				</form>
 			</div>
 		</li>
-
+		@endauth
 	</ul>
 </nav>
 

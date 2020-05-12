@@ -17,9 +17,11 @@ class DatabaseSeeder extends Seeder
 			$this->command->info("DataBase refresh Succesfly...!");
 		}
 		$this->call([
-			UsersTableSeeder::class,
-			PostsTableSeeder::class,
-			CommentsTableSeeder::class
+				UsersTableSeeder::class,
+				PostsTableSeeder::class,
+				CommentsTableSeeder::class,
+				TagTableSeeder::class,
+				TagPostsTableSeeder::class
 			]);
 
 		// $users = factory(App\User::class, 10)->create();

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -47,17 +48,34 @@ class PostController extends Controller
 
 
 		// $posts = Post::withCount('comments')->orderBy('updated_at', 'desc')->get();
-		$posts = Post::withCount('comments')->get();
+		$posts = Post::withCount('comments')->with(['user', 'tags'])->get();
+
 
 		// $user = User::withCount('posts')->get();
 
 		// dd($user);
 
+		// $mostCommented = Cache::remember('mostCommented', now()->addSeconds(10), function ()
+		// {
+		// 	return (Post::mostCommented()->take(5)->get());
+		// });
+
+		// $mostWriters = Cache::remember('mostWriters', now()->addSeconds(10), function ()
+		// {
+		// 	return (User::mostWriter()->take(5)->get());
+		// });
+
+		// $usersActiveLastMounth = Cache::remember('usersActiveLastMounth', now()->addSeconds(10), function ()
+		// {
+		// 	return (User::userActiveLastMounth()->take(5)->get());
+		// });
+
 		return (view('posts.index', [
 			'posts' => $posts,
-			'mostCommented' => Post::mostCommented()->take(5)->get(),
-			'mostWriters' => User::mostWriter()->take(5)->get(),
-			'usersActiveLastMounth' => User::userActiveLastMounth()->take(5)->get(),
+			// we comment that because we use ViewComposer
+			// 'mostCommented' => $mostCommented,
+			// 'mostWriters' => $mostWriters,
+			// 'usersActiveLastMounth' => $usersActiveLastMounth,
 			'tab' => 'list'
 		]));
 
@@ -97,9 +115,20 @@ class PostController extends Controller
 	public function show($id)
 	{
 		// dd(\App\Post::find($id));
+
+		$post = Cache::remember("post-show-{$id}", now()->addMinutes(60), function () use ($id)
+		{
+			return (Post::with('comments')->with('tags')->findOrFail($id));
+		});
+
+		// $commentes = Cache::remember("comment-post-show-{$id}", now()->addMinutes(60), function () use ($id)
+		// {
+		// 	return (Comment::where('post_id', $id)->get());
+		// });
+
 		return (view('posts.show', [
-			'post' => Post::findOrFail($id),
-			'comments' => Comment::where('post_id', $id)->get()
+			'post' => $post,
+			// 'comments' => $commentes
 		]));
 	}
 	public  function create()
