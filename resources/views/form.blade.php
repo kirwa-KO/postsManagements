@@ -1,13 +1,13 @@
 <div class="form-group">
 	<label for="postname">Title of Post</label>
-	<input class="form-control" name="postname" id="postname" type="text">
+	<input type="text" class="form-control" id="postname" name="postname" value="{{ old('postname', $post->postname ?? null) }}" placeholder="Post name">
+
 <div>
-		{{-- <input name="postname" id="postname" type="text" value="{{ old('postname', $post->postname ?? null) }}"> --}}
 {{-- <br>
 <br> --}}
 <div class="form-group">
 	<label for="description">The contant of Post</label>
-	<input class="form-control" name="description" id="description" type="text">
+	<input class="form-control" name="description" id="description" type="text" value=" {{ old('description', $post->description ?? null) }}" placeholder="Description">
 </div>
 
 <div class="form-group">
@@ -15,7 +15,6 @@
 	<input type="file" name="picture" id="picture" class="form-control-file">
 </div>
 
-{{-- <input name="description" id="description" type="text" value="{{ old('description',$post->description ?? null) }}"> --}}
 {{-- <br> --}}
 
 <x-errors my-class="warning"></x-errors>

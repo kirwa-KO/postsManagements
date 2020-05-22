@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\CommentedPostMarkdown;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -78,3 +79,13 @@ Route::get('/posts/tag/{id}', 'PostTagController@index')
 
 
 Route::resource('posts.comment', 'PostCommentController')->only(['store']);
+Route::resource('users.comment', 'UserCommentController')->only(['store']);
+
+Route::resource('users', 'UserController')->only(['show', 'edit', 'update']);
+
+
+Route::get('/mailable', function () {
+	$comment = App\Comment::find(1);
+
+	return new App\Mail\CommentedPostMarkdown($comment);
+});

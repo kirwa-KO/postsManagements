@@ -9,6 +9,7 @@ use App\Comment;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
+use App\Image;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Cache;
@@ -150,32 +151,46 @@ class PostController extends Controller
 		// $post->status = "active";
 		// $post->save();
 
-		$fileHas = $request->hasFile('picture');
-		dump($fileHas);
-		if ($fileHas)
-		{
-			$file = $request->file('picture');
-			dump($file);
-			dump($file->getClientMimeType());
-			dump($file->getClientOriginalExtension());
-			dump($file->getClientOriginalName());
-			// $file->store('pictures');
-			// Storage::putFile('pictures', $file);
-			// Storage::disk('local')->putFile('picoo', $file);
-			// $file->storeAs('pictures', random_int(1, 100) . '.' . $file->guessClientExtension());
-			Storage::putFileAs('proton', $file, random_int(200, 300) . '.' . $file->guessClientExtension());
-		}
+		// file upload methodes
+		// $fileHas = $request->hasFile('picture');
+		// dump($fileHas);
+		// if ($fileHas)
+		// {
+		// 	$file = $request->file('picture');
+		// 	dump($file);
+		// 	dump($file->getClientMimeType());
+		// 	dump($file->getClientOriginalExtension());
+		// 	dump($file->getClientOriginalName());
+		// 	// $file->store('pictures');
+		// 	// Storage::putFile('pictures', $file);
+		// 	// Storage::disk('local')->putFile('picoo', $file);
+		// 	// $file->storeAs('pictures', random_int(1, 100) . '.' . $file->guessClientExtension());
+		// 	$name1 = Storage::putFileAs('proton', $file, random_int(200, 300) . '.' . $file->guessClientExtension());
+		// 	$name2 = Storage::disk('local')->putFile('proton', $file);
+		// 	dump(Storage::url($name1));
+		// 	dump(Storage::url($name2));
+		// }
+		// die();
 
-		die();
+
 		$data = $request->only('postname', 'description');
 		$data['password'] = password_hash('you can do it...!', PASSWORD_DEFAULT);
 		$data['status'] = 'active';
 		$data['user_id'] = $request->user()->id;
 		$post = Post::create($data);
-		// return redirect()->route('posts.show', ['post' => $post->id]);
 
+		// save the image of post
+
+		if ($request->hasFile('picture'))
+		{
+			$path = $request->file('picture')->store('posts');
+			$image = new Image(['path' => $path]);
+			$post->image()->save($image);
+		}
+		
 		$request->session()->flash('status', 'Post Added Succesfly...!');
-		return redirect()->route('posts.index');
+		return redirect()->route('posts.show', ['post' => $post->id]);
+		// return redirect()->route('posts.index');
 	}
 	public	function edit($id)
 	{
@@ -202,6 +217,24 @@ class PostController extends Controller
 		$post->password = password_hash('Edited', PASSWORD_DEFAULT);
 		$post->status = 'active';
 		$post->save();
+
+		if ($request->hasFile('picture'))
+		{
+			$path = $request->file('picture')->store('posts');
+
+			if ($post->image)
+			{
+				Storage::delete($post->image->path);
+				$post->image->path = $path;
+				$post->image->save();
+			}
+			else
+			{
+				// $post->image()->save(Image::create(['path' => $path]));
+				$post->image()->save(Image::make(['path' => $path]));
+			}
+		}
+
 		$request->session()->flash('status', 'Post updated Succesfly..!');
 		return redirect()->route('posts.index');
 	}

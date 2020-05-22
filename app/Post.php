@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -15,14 +16,26 @@ class Post extends Model
 	use		SoftDeletes;
 
 	protected	$fillable = ['postname', 'description', 'password', 'status', 'user_id'];
+
+	// we remove that we will use morphs
+	// public	function	comments()
+	// {
+	// 	return $this->hasMany('App\Comment')->dernier();
+	// }
+
 	public	function	comments()
 	{
-		return $this->hasMany('App\Comment')->dernier();
+		return $this->morphMany('App\Comment', 'commentable')->dernier();
 	}
 
 	public	function	user()
 	{
 		return $this->belongsTo(User::class);
+	}
+
+	public	function	image()
+	{
+		return $this->morphOne('App\Image', 'imageable');
 	}
 
 	public	function	scopeMostCommented(Builder $query)
@@ -43,26 +56,31 @@ class Post extends Model
 
 		static::addGlobalScope(new LatestScopes);
 
-		static::updating(function (Post $post)
-		{
-			Cache::forget("comment-post-show-{$post->id}");
-			Cache::forget("post-show-{$post->id}");
-		});
+		// we comment that because we will use observe
+		// static::updating(function (Post $post)
+		// {
+		// 	Cache::forget("comment-post-show-{$post->id}");
+		// 	Cache::forget("post-show-{$post->id}");
+		// });
 
-		static::deleting(function (Post $post)
-		{
-			$post->comments()->delete();
-		});
+		// static::deleting(function (Post $post)
+		// {
+		// 	$post->comments()->delete();
+		// });
 
-		static::restoring(function (post $post)
-		{
-			$post->comments()->restore();
-		});
+		// static::restoring(function (post $post)
+		// {
+		// 	$post->comments()->restore();
+		// });
 	}
 
+	// public	function	tags()
+	// {
+	// 	return ($this->belongsToMany("App\Tag")->withTimestamps());
+	// }
 	public	function	tags()
 	{
-		return ($this->belongsToMany("App\Tag")->withTimestamps());
+		return $this->morphToMany("App\Tag", "taggable")->withTimestamps();
 	}
 
 }

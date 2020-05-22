@@ -12,6 +12,7 @@ class CommentsTableSeeder extends Seeder
 	public function run()
 	{
 		$posts = App\Post::all();
+
 		if ($posts->count() == 0)
 		{
 			$this->command->info("No Post detected...!");
@@ -26,12 +27,27 @@ class CommentsTableSeeder extends Seeder
 			return ;
 		}
 
-		$nbComment = (int)($this->command->ask("How many comment you want to add...?", 500));
-		factory(App\Comment::class, $nbComment)->make()->each(function ($comment) use ($posts, $users)
-		{
-			$comment->post_id = $posts->random()->id;
-			$comment->user_id = $users->random()->id;
-			$comment->save();
-		});
+		$nbComment = (int)($this->command->ask("How many comment you want to add...?", 150));
+
+		// factory(App\Comment::class, $nbComment)->make()->each(function ($comment) use ($posts, $users)
+		// {
+		// 	$comment->post_id = $posts->random()->id;
+		// 	$comment->user_id = $users->random()->id;
+		// 	$comment->save();
+		// });
+
+			factory(App\Comment::class, $nbComment)->make()->each(function ($comment) use ($posts, $users) {
+				$comment->commentable_id = $posts->random()->id;
+				$comment->commentable_type = 'App\Post';
+				$comment->user_id = $users->random()->id;
+				$comment->save();
+			});
+
+			factory(App\Comment::class, $nbComment)->make()->each(function ($comment) use ($users) {
+				$comment->commentable_id = $users->random()->id;
+				$comment->commentable_type = 'App\User';
+				$comment->user_id = $users->random()->id;
+				$comment->save();
+			});
 	}
 }

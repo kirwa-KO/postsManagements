@@ -32,6 +32,13 @@
 					<x-badge type="dark"> Old {{ $post->updated_at->diffForHumans() }} </x-badge>
 				@endif
 
+				{{-- import post image --}}
+				@if ($post->image)
+					{{-- <img src="{{ Storage::url($post->image->path ?? null) }}" alt="post image" class="img-fluid rounded"> --}}
+
+					<img src="{{ $post->image->url() }}" alt="post image" class="img-fluid rounded">
+					
+				@endif
 				<h2>
 					<a href=" {{ route('posts.show', [ 'post' => $post->id ]) }} ">
 					@if ($post->trashed())
@@ -51,8 +58,8 @@
 				{{-- <p class="text-muted">
 					{{ $post->updated_at->diffForHumans() }}, By {{ $post->user->name }}
 				</p> --}}
-				<x-updated :date="$post->updated_at->diffForHumans()" :name="$post->user->name"></x-updated>
-				<x-updated :date="$post->created_at->diffForHumans()" name="">Created at: </x-updated>
+				<x-updated :date="$post->updated_at->diffForHumans()" :name="$post->user->name" :user-id="$post->user->id"></x-updated>
+				<x-updated :date="$post->created_at->diffForHumans()">Updated at: </x-updated>
 
 				@if ($post->comments_count > 0)
 				<div>

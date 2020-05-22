@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Comment;
 use App\Http\ViewComposer\ActivityComposer;
+use App\Observers\CommentObserve;
+use App\Observers\PostObserve;
+use App\Post;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,5 +39,8 @@ class AppServiceProvider extends ServiceProvider
             ['posts.index', 'posts.sidebar']
             , ActivityComposer::class
         );
+
+        Post::observe(PostObserve::class);
+        Comment::observe(CommentObserve::class);
     }
 }

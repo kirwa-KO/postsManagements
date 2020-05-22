@@ -14,7 +14,7 @@ class Comment extends Model
 
 	protected	$fillable = ['content', 'user_id'];
 
-
+	
 	public function post()
 	{
 		return $this->belongsTo('App\Post');
@@ -23,6 +23,12 @@ class Comment extends Model
 	public	function user()
 	{
 		return $this->belongsTo('App\User');
+	}
+
+	// we use that we will use morphs
+	public	function commentable()
+	{
+		return $this->morphTo();
 	}
 
 	public  function	scopeDernier(Builder $query)
@@ -36,9 +42,18 @@ class Comment extends Model
 
 		static::addGlobalScope(new LatestScopes);
 		
-		static::creating(function (Comment $comment)
-		{
-			Cache::forget("post-show-{$comment->post->id}");
-		});
+		// we comment that because we use observer
+		// static::creating(function (Comment $comment)
+		// {
+		// 	// Cache::forget("post-show-{$comment->post->id}");
+		// 	// because now we use morph
+		// 	Cache::forget("post-show-{$comment->commentable->id}");
+		// });
 	}
+
+	public	function	tags()
+	{
+		return $this->morphToMany("App\Tag", "taggable")->withTimestamps();
+	}
+	
 }

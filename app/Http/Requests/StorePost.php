@@ -25,7 +25,9 @@ class StorePost extends FormRequest
     {
         return [
 			'postname' => 'bail|required|min:5|max:100',
-			'description' => 'required'
+            'description' => 'required',
+            'picture' => 'image|mimes:jpg,jpeg,png,gif,svg|max:1024'
+            // 'picture' => 'image|mimes:jpg,jpeg,png,gif,svg|max:1024|dimensions:min_height=1000'
 		];
     }
 }

@@ -19,7 +19,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ mix('css/theme.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/.css') }}" rel="stylesheet">
     <link rel="icon" href=" {{ asset('images/posts_icon.png') }} ">
 </head>
 <body>

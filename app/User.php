@@ -44,9 +44,21 @@ class User extends Authenticatable
 		return $this->hasMany(Post::class);
 	}
 
+	// we remove that we use morph
+	// public	function	comments()
+	// {
+	// 	return $this->hasMany(Comment::class);
+	// }
+
 	public	function	comments()
 	{
-		return $this->hasMany(Comment::class);
+		return $this->morphMany('App\Comment', 'commentable')->dernier();
+	}
+
+
+	public	function	image()
+	{
+		return $this->morphOne('App\Image', 'imageable');
 	}
 
 	public  function    scopeMostWriter(Builder $query)
