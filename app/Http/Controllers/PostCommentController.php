@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentPosted as MyEventsCommentPosted;
 use App\Http\Requests\StorePostComment;
 use App\Jobs\NotifyCommentedPost;
 use App\Mail\CommentedPostMarkdown;
@@ -30,14 +31,17 @@ class PostCommentController extends Controller
         // Mail::to($post->user->email)->send(new CommentedPostMarkdown($comment));
 
         // to use queue 
-        Mail::to($post->user->email)->queue(new CommentedPostMarkdown($comment));
+        // Mail::to($post->user->email)->queue(new CommentedPostMarkdown($comment));
 
         // to put in queue and send it after a minute
         // $when = now()->addMinutes(1);
         // Mail::to($post->user->email)->later($when, new CommentedPostMarkdown($comment));
 
-        NotifyCommentedPost::dispatch($comment);
+        // we comment that because we will use events
+        // Mail::to($post->user->email)->queue(new CommentedPostMarkdown($comment));
+        // NotifyCommentedPost::dispatch($comment);
 
+        event(new MyEventsCommentPosted($comment));
 
         return redirect()->back();
     }
