@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Comment;
+use App\Http\Resources\CommentResource;
 use App\Http\ViewComposer\ActivityComposer;
 use App\Observers\CommentObserve;
 use App\Observers\PostObserve;
 use App\Post;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,5 +44,11 @@ class AppServiceProvider extends ServiceProvider
 
         Post::observe(PostObserve::class);
         Comment::observe(CommentObserve::class);
+
+        // this to remove data in comment resource response
+        // CommentResource::withoutWrapping();
+
+        // this to remove data in json response in all resources
+        JsonResource::withoutWrapping();
     }
 }

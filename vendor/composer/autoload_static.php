@@ -115,6 +115,7 @@ class ComposerStaticInit2145b8d1d4fc8bab26b8946a2ca1bbab
             'League\\CommonMark\\' => 18,
             'Laravel\\Ui\\' => 11,
             'Laravel\\Tinker\\' => 15,
+            'Laravel\\Sanctum\\' => 16,
         ),
         'I' => 
         array (
@@ -361,6 +362,10 @@ class ComposerStaticInit2145b8d1d4fc8bab26b8946a2ca1bbab
         array (
             0 => __DIR__ . '/..' . '/laravel/tinker/src',
         ),
+        'Laravel\\Sanctum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel/sanctum/src',
+        ),
         'Illuminate\\Foundation\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/ui/auth-backend',
@@ -483,7 +488,9 @@ class ComposerStaticInit2145b8d1d4fc8bab26b8946a2ca1bbab
     public static $classMap = array (
         'App\\Comment' => __DIR__ . '/../..' . '/app/Comment.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Events\\CommentPosted' => __DIR__ . '/../..' . '/app/Events/CommentPosted.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\Api\\v1\\PostCommentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/v1/PostCommentController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
@@ -502,6 +509,7 @@ class ComposerStaticInit2145b8d1d4fc8bab26b8946a2ca1bbab
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
+        'App\\Http\\Middleware\\MiddlewareLocale' => __DIR__ . '/../..' . '/app/Http/Middleware/MiddlewareLocale.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
@@ -509,10 +517,16 @@ class ComposerStaticInit2145b8d1d4fc8bab26b8946a2ca1bbab
         'App\\Http\\Requests\\StorePost' => __DIR__ . '/../..' . '/app/Http/Requests/StorePost.php',
         'App\\Http\\Requests\\StorePostComment' => __DIR__ . '/../..' . '/app/Http/Requests/StorePostComment.php',
         'App\\Http\\Requests\\UpdateUser' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateUser.php',
+        'App\\Http\\Resources\\CommentResource' => __DIR__ . '/../..' . '/app/Http/Resources/CommentResource.php',
+        'App\\Http\\Resources\\CommentUserResource' => __DIR__ . '/../..' . '/app/Http/Resources/CommentUserResource.php',
         'App\\Http\\ViewComposer\\ActivityComposer' => __DIR__ . '/../..' . '/app/Http/ViewComposer/ActivityComposer.php',
         'App\\Image' => __DIR__ . '/../..' . '/app/Image.php',
+        'App\\Jobs\\NotifyCommentedPost' => __DIR__ . '/../..' . '/app/Jobs/NotifyCommentedPost.php',
+        'App\\Listeners\\NotifyUserAboutPostCommented' => __DIR__ . '/../..' . '/app/Listeners/NotifyUserAboutPostCommented.php',
         'App\\Mail\\CommentPosted' => __DIR__ . '/../..' . '/app/Mail/CommentPosted.php',
         'App\\Mail\\CommentedPostMarkdown' => __DIR__ . '/../..' . '/app/Mail/CommentedPostMarkdown.php',
+        'App\\Observers\\CommentObserve' => __DIR__ . '/../..' . '/app/Observers/CommentObserve.php',
+        'App\\Observers\\PostObserve' => __DIR__ . '/../..' . '/app/Observers/PostObserve.php',
         'App\\Policies\\PostPolicy' => __DIR__ . '/../..' . '/app/Policies/PostPolicy.php',
         'App\\Policies\\userPolicy' => __DIR__ . '/../..' . '/app/Policies/userPolicy.php',
         'App\\Post' => __DIR__ . '/../..' . '/app/Post.php',
@@ -2413,6 +2427,16 @@ class ComposerStaticInit2145b8d1d4fc8bab26b8946a2ca1bbab
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
+        'Laravel\\Sanctum\\Contracts\\HasAbilities' => __DIR__ . '/..' . '/laravel/sanctum/src/Contracts/HasAbilities.php',
+        'Laravel\\Sanctum\\Guard' => __DIR__ . '/..' . '/laravel/sanctum/src/Guard.php',
+        'Laravel\\Sanctum\\HasApiTokens' => __DIR__ . '/..' . '/laravel/sanctum/src/HasApiTokens.php',
+        'Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController' => __DIR__ . '/..' . '/laravel/sanctum/src/Http/Controllers/CsrfCookieController.php',
+        'Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful' => __DIR__ . '/..' . '/laravel/sanctum/src/Http/Middleware/EnsureFrontendRequestsAreStateful.php',
+        'Laravel\\Sanctum\\NewAccessToken' => __DIR__ . '/..' . '/laravel/sanctum/src/NewAccessToken.php',
+        'Laravel\\Sanctum\\PersonalAccessToken' => __DIR__ . '/..' . '/laravel/sanctum/src/PersonalAccessToken.php',
+        'Laravel\\Sanctum\\Sanctum' => __DIR__ . '/..' . '/laravel/sanctum/src/Sanctum.php',
+        'Laravel\\Sanctum\\SanctumServiceProvider' => __DIR__ . '/..' . '/laravel/sanctum/src/SanctumServiceProvider.php',
+        'Laravel\\Sanctum\\TransientToken' => __DIR__ . '/..' . '/laravel/sanctum/src/TransientToken.php',
         'Laravel\\Tinker\\ClassAliasAutoloader' => __DIR__ . '/..' . '/laravel/tinker/src/ClassAliasAutoloader.php',
         'Laravel\\Tinker\\Console\\TinkerCommand' => __DIR__ . '/..' . '/laravel/tinker/src/Console/TinkerCommand.php',
         'Laravel\\Tinker\\TinkerCaster' => __DIR__ . '/..' . '/laravel/tinker/src/TinkerCaster.php',

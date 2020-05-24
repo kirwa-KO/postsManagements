@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Events\CommentPosted as MyEventsCommentPosted;
 use App\Http\Requests\StorePostComment;
+use App\Http\Resources\CommentResource;
 use App\Jobs\NotifyCommentedPost;
 use App\Mail\CommentedPostMarkdown;
 use App\Mail\CommentPosted;
@@ -16,7 +18,14 @@ class PostCommentController extends Controller
 
     public  function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->only(['store']);
+    }
+
+    public  function show (Post $post)
+    {
+        // return $post->with('user')->first();
+        // return  new CommentResource($post->comments->first());
+        return  CommentResource::collection($post->comments()->with('user')->get());
     }
 
     public  function store(StorePostComment $request, Post $post)

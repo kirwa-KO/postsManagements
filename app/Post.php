@@ -17,6 +17,8 @@ class Post extends Model
 
 	protected	$fillable = ['postname', 'description', 'password', 'status', 'user_id'];
 
+	protected	$hidden = ['user_id', 'created_at', 'updated_at', 'deleted_at'];
+
 	// we remove that we will use morphs
 	// public	function	comments()
 	// {
